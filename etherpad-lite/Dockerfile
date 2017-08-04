@@ -5,15 +5,13 @@ MAINTAINER Tony Motakis <tvelocity@gmail.com>
 ENV ETHERPAD_VERSION 1.6.1
 
 RUN apt-get update && \
-    apt-get install -y curl unzip nodejs-legacy npm mysql-client && \
+    apt-get install -y curl git unzip nodejs-legacy npm mysql-client && \
     rm -r /var/lib/apt/lists/*
 
 WORKDIR /opt/
 
-RUN curl -SL \
-    https://github.com/ether/etherpad-lite/archive/${ETHERPAD_VERSION}.zip \
-    > etherpad.zip && unzip etherpad && rm etherpad.zip && \
-    mv etherpad-lite-${ETHERPAD_VERSION} etherpad-lite
+# Use my fork until the fix has been merged upstream
+RUN git clone --single-branch --branch fix-socket-io-crash https://github.com/djmaze/etherpad-lite.git
 
 WORKDIR etherpad-lite
 
